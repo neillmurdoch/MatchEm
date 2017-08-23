@@ -93,7 +93,8 @@ namespace Assets.Scripts
             //      bottom = 2
             //      left = 3
 
-            // For all others - new symbols will be on right and top, so read neighbours to get symbols
+            // New symbols will be on top and right, but will need to read neighbours to get symbols for left and bottom, when 
+            // not at the edges of the board.
 
             //  if y = 0 && x = 0
             //      Generate T, R, B, L
@@ -121,42 +122,42 @@ namespace Assets.Scripts
 
             try
             {
-                if (y == 0 && x == 0)
+                if (y == 0 && x == 0)                           // Bottom left corner
                 {
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                 }
-                else if (y == 0 && x != 0)
+                else if (y == 0 && x != 0)                      // Bottom edge, not left edge
                 {
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(GetTileAt(y, x - 1).Sides[(int)SquareTile.SideEnum.Right]);      // TODO - Trap null here!
                 }
-                else if (y > 0 && y < _size - 1 && x == 0)
+                else if (y > 0 && y < _size - 1 && x == 0)      // Not bottom edge, left edge
                 {
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Top]);        // TODO - Trap null here!
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                 }
-                else if (y > 0 && y < _size - 1 && x != 0)
+                else if (y > 0 && y < _size - 1 && x != 0)      // Not bottom edge, not left edge
                 {
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Top]);        // TODO - Trap null here!
                     tile.Sides.Add(GetTileAt(y, x - 1).Sides[(int)SquareTile.SideEnum.Right]);      // TODO - Trap null here!
                 }
-                else if (y == _size - 1 && x == 0)
+                else if (y == _size - 1 && x == 0)              // Top edge, left edge
                 {
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Top]);        // TODO - Trap null here!
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                 }
-                else if (y == _size - 1 && x != 0)
+                else if (y == _size - 1 && x != 0)              // Top edge, not left edge
                 {
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
@@ -195,12 +196,6 @@ namespace Assets.Scripts
             //      2  i  j  k  l
             //      1  e  f  g  h
             //      0  a  b  c  d
-            //
-            //         0  1  2  3
-            //      0  a  b  c  d
-            //      1  e  f  g  h
-            //      2  i  j  k  l
-            //      3  m  n  o  p
             //
             //      GetTileAt(0, 0) = 0 + (0 * 4)   = 0     = a
             //      GetTileAt(3, 0) = 3 + (0 * 4)   = 3     = d

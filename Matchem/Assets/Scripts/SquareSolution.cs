@@ -69,7 +69,8 @@ namespace Assets.Scripts
             // Get a colour set to use for this solution, also controlled by the difficulty level.
             Colours = TileHelper.GetColourSet(colourDifficulty);
 
-            // For a square board, we start at the top and work across in rows. The number of rows will be the size.
+            // For a square board, we start at the bottom and work across in rows. The number of rows/columns will be the size.
+            // We work upwards so the GameObject coordinates will increase, rather than decrease.
             for (int y = 0; y < _size; y++)
             {
                 for (int x = 0; x < _size; x++)
@@ -92,27 +93,28 @@ namespace Assets.Scripts
             //      bottom = 2
             //      left = 3
 
-            // For all others - new symbols will be on right and bottom, read neighbours to get symbols
+            // For all others - new symbols will be on right and top, so read neighbours to get symbols
 
             //  if y = 0 && x = 0
             //      Generate T, R, B, L
             //  else if y = 0 && x != 0
-            //      Generate T
+            //      Generate T, R, B
             //      Set L to R of tile (x - 1) (Store from previous iteration?)
-            //      Generate R, B
             //  else if y > 0 && y < size - 1 && x = 0
-            //      Set T to B of tile (row - 1)
-            //      Generate R, B, L
+            //      Generate T, R
+            //      Set B to T of tile (y - 1)
+            //      Generate L
             //  else if y > 0 && y < size - 1 && x != 0
-            //      Set T to B of tile (y - 1)
-            //      Generate R, B
+            //      Generate T, R
+            //      Set B to T of tile (y - 1)
             //      Set L to R of tile (x - 1)
             //  else if y = size - 1 && x = 0
-            //      Set T to B of tile (y - 1)
-            //      Generate R, B, L
+            //      Generate T, R
+            //      Set B to T of tile (y - 1)
+            //      Generate L
             //  else if y = size - 1 & x != 0
-            //      Set T to B of tile (y - 1)
-            //      Generate R, B
+            //      Generate T, R
+            //      Set B to T of tile (y - 1)
             //      Set L to R of tile (x - 1)
 
             //Debug.LogFormat("Generating tile: {0}, {1}", x, y);
@@ -135,30 +137,30 @@ namespace Assets.Scripts
                 }
                 else if (y > 0 && y < _size - 1 && x == 0)
                 {
-                    tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Bottom]);      // TODO - Trap null here!
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
+                    tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Top]);        // TODO - Trap null here!
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                 }
                 else if (y > 0 && y < _size - 1 && x != 0)
                 {
-                    tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Bottom]);      // TODO - Trap null here!
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
+                    tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Top]);        // TODO - Trap null here!
                     tile.Sides.Add(GetTileAt(y, x - 1).Sides[(int)SquareTile.SideEnum.Right]);      // TODO - Trap null here!
                 }
                 else if (y == _size - 1 && x == 0)
                 {
-                    tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Bottom]);      // TODO - Trap null here!
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
+                    tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Top]);        // TODO - Trap null here!
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                 }
                 else if (y == _size - 1 && x != 0)
                 {
-                    tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Bottom]);      // TODO - Trap null here!
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
                     tile.Sides.Add(TileHelper.GetSide(Symbols, Colours));
+                    tile.Sides.Add(GetTileAt(y - 1, x).Sides[(int)SquareTile.SideEnum.Bottom]);     // TODO - Trap null here!
                     tile.Sides.Add(GetTileAt(y, x - 1).Sides[(int)SquareTile.SideEnum.Right]);      // TODO - Trap null here!
                 }
                 else
@@ -170,48 +172,6 @@ namespace Assets.Scripts
             {
                 Debug.LogFormat("Error accessing neighbouring tile for {0}, {1} - {2}", x, y, ex.ToString());
             }
-
-
-
-            //if (row == 0 && col == 0)
-            //{
-            //    tile.Sides[(int)SquareTile.SideEnum.Top] = TileHelper.GetSide(Symbols, Colours);
-            //    tile.Sides[(int)SquareTile.SideEnum.Left] = TileHelper.GetSide(Symbols, Colours);
-            //}
-            //else if (row == 0 && col != 0)
-            //{
-            //    tile.Sides[(int)SquareTile.SideEnum.Top] = TileHelper.GetSide(Symbols, Colours);
-            //    tile.Sides[(int)SquareTile.SideEnum.Left] = GetTileAt(row, col - 1).Sides[(int)SquareTile.SideEnum.Right];      // TODO - Trap null here!
-            //}
-            //else if (row > 0 && row < _size - 1 && col == 0)
-            //{
-            //    tile.Sides[(int)SquareTile.SideEnum.Top] = GetTileAt(row - 1, col).Sides[(int)SquareTile.SideEnum.Bottom];      // TODO - Trap null here!
-            //    tile.Sides[(int)SquareTile.SideEnum.Left] = TileHelper.GetSide(Symbols, Colours);
-            //}
-            //else if (row > 0 && row < _size - 1 && col != 0)
-            //{
-            //    tile.Sides[(int)SquareTile.SideEnum.Top] = GetTileAt(row - 1, col).Sides[(int)SquareTile.SideEnum.Bottom];      // TODO - Trap null here!
-            //    tile.Sides[(int)SquareTile.SideEnum.Left] = GetTileAt(row, col - 1).Sides[(int)SquareTile.SideEnum.Right];      // TODO - Trap null here!
-            //}
-            //else if (row == _size - 1 && col == 0)
-            //{
-            //    tile.Sides[(int)SquareTile.SideEnum.Top] = GetTileAt(row - 1, col).Sides[(int)SquareTile.SideEnum.Bottom];      // TODO - Trap null here!
-            //    tile.Sides[(int)SquareTile.SideEnum.Left] = TileHelper.GetSide(Symbols, Colours);
-            //}
-            //else if (row == _size - 1 && col != 0)
-            //{
-            //    tile.Sides[(int)SquareTile.SideEnum.Top] = GetTileAt(row - 1, col).Sides[(int)SquareTile.SideEnum.Bottom];      // TODO - Trap null here!
-            //    tile.Sides[(int)SquareTile.SideEnum.Left] = GetTileAt(row, col - 1).Sides[(int)SquareTile.SideEnum.Right];      // TODO - Trap null here!
-            //}
-            //else
-            //{
-            //    Debug.Log(string.Format("Tile generation failed at {0}, {1}", row, col));
-            //}
-
-            //// We always generate new symbols and colours for R, B
-            //tile.Sides[(int)SquareTile.SideEnum.Right] = TileHelper.GetSide(Symbols, Colours);
-            //tile.Sides[(int)SquareTile.SideEnum.Bottom] = TileHelper.GetSide(Symbols, Colours);
-            //}
 
             return tile;
         }
@@ -229,6 +189,12 @@ namespace Assets.Scripts
             // Examples (size = 4):
             //      0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
             //      a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z
+            //
+            //         0  1  2  3
+            //      3  m  n  o  p
+            //      2  i  j  k  l
+            //      1  e  f  g  h
+            //      0  a  b  c  d
             //
             //         0  1  2  3
             //      0  a  b  c  d

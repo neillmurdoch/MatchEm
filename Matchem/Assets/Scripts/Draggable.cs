@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    Transform originalParent = null;
+    public Transform originalParent = null;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -12,18 +12,38 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         originalParent = this.transform.parent;
 
-        this.transform.SetParent(this.transform.parent.parent);
+        this.transform.SetParent(this.transform.root);
+
+        GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+        DropTarget[] targets = GameObject.FindObjectsOfType<DropTarget>();
+        foreach (var target in targets)
+        {
+            Renderer renderer = GetComponent<Renderer>();
+            renderer.material.color = Color.black;
+        }
+
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         this.transform.position = eventData.position;
-        Debug.Log("OnDrag");
+        //Debug.Log("OnDrag");
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("OnEndDrag");
+        Debug.LogFormat("OnEndDrag: {0}", eventData.position.ToString());
         this.transform.SetParent(originalParent);
+
+        GetComponent<CanvasGroup>().blocksRaycasts = true;
+
+        DropTarget[] targets = GameObject.FindObjectsOfType<DropTarget>();
+        foreach (var target in targets)
+        {
+            Renderer renderer = GetComponent<Renderer>();
+            renderer.material.color = Color.white;
+        }
+
     }
 }

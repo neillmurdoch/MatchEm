@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.Scripts
 {
-    class SquareTile : ITile
+    class TileSquare : ITile
     {
         public enum SideEnum
         {
@@ -20,7 +20,7 @@ namespace Assets.Scripts
         public int x { get; set; }
         public int y { get; set; }
 
-        public SquareTile()
+        public TileSquare()
         {
             Sides = new List<TileSide>();
 

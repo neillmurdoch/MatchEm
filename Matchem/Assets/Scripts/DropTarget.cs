@@ -12,7 +12,7 @@ public class DropTarget : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         if (d != null)
         {
             d.originalParent = this.transform;
-            eventData.pointerDrag.transform.position = this.transform.position;
+            //eventData.pointerDrag.transform.position = this.transform.position;
         }
     }
 

@@ -13,10 +13,10 @@ TagManager:
   - UI
   - 
   - 
+  - Board and Deck
+  - Tiles
   - Symbols
-  - 
-  - 
-  - 
+  - Dragging
   - 
   - 
   - 
@@ -40,4 +40,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Board and Deck
+    uniqueID: 1297644137
+    locked: 0
+  - name: Tiles
+    uniqueID: 2956549987
+    locked: 0
+  - name: Symbols
+    uniqueID: 2976112595
     locked: 0

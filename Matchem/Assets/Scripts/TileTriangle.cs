@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Assets.Scripts
 {
-    //class TriangleTile : ITile
+    //class TileTriangle : ITile
     //{
     //    public List<string> sides { get; set; }
 
-    //    public TriangleTile()
+    //    public TileTriangle()
     //    {
     //        sides = new List<string>();
 

@@ -36,7 +36,7 @@ public class ScriptTests : MonoBehaviour {
 
 		Debug.LogFormat("Tile difficulty: {0}, Symbol difficulty {1}, Colour difficulty {2}", solution.TileDifficulity, solution.SymbolDifficulty, solution.ColourDifficulty);
 
-		foreach (SquareTile tile in solution.Tiles)
+		foreach (TileSquare tile in solution.Tiles)
 		{
 			foreach (TileSide side in tile.Sides)
 			{

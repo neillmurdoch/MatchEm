@@ -13,10 +13,10 @@ TagManager:
   - UI
   - 
   - 
-  - Board and Deck
-  - Tiles
-  - Symbols
-  - Dragging
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -46,7 +46,4 @@ TagManager:
     locked: 0
   - name: Tiles
     uniqueID: 2956549987
-    locked: 0
-  - name: Symbols
-    uniqueID: 2976112595
     locked: 0
